@@ -15,6 +15,11 @@ const db = getFirestore();
 const colRef = collection(db, "movies");
 const qRef = query(colRef, where("category", "==", "drama"), orderBy("createdAt"));
 
+// const documentReference = doc(db, "movies", "6vDyeYJOkEq7Sn9qeC0y");
+// onSnapshot(documentReference, (document) => {
+//   console.log(document.data(), document.id);
+// });
+
 getDocs(qRef)
   .then(data => {
     const movies = [];
