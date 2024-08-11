@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, getDocs, onSnapshot, addDoc, deleteDoc, doc, query, where, orderBy, serverTimestamp } from "firebase/firestore";
+import { getFirestore, collection, getDocs, onSnapshot, addDoc, deleteDoc, doc, query, where, orderBy, serverTimestamp, updateDoc } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCTcpL6ee0PYNvdmoUJe4LEMgAUHTvVSvM",
@@ -57,4 +57,18 @@ deleteForm.addEventListener("submit", event => {
     .then(() => {
       deleteForm.reset();
     });
-})
+});
+
+const updatedForm = document.querySelector(".update");
+updatedForm.addEventListener("submit", event => {
+  event.preventDefault();
+
+  const documentReference = doc(db, "movies", updatedForm.id.value);
+  updateDoc(documentReference, {
+    name: updatedForm.name.value,
+    updatedAt: serverTimestamp(),
+  })
+    .then(() => {
+      updatedForm.reset();
+    });
+});
