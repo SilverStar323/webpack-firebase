@@ -1,4 +1,5 @@
 import { initializeApp } from "firebase/app";
+import { getFirestore, collection, getDocs } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCTcpL6ee0PYNvdmoUJe4LEMgAUHTvVSvM",
@@ -10,3 +11,17 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+const db = getFirestore();
+const colRef = collection(db, "movies");
+
+getDocs(colRef)
+  .then(data => {
+    const movies = [];
+    data.docs.forEach(document => {
+      movies.push({ ...document.data(), id: document.id });
+    });
+    console.log(movies);
+  })
+  .catch(error => {
+    console.log(error);
+  })
