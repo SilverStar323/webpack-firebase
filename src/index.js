@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, getDocs, onSnapshot, addDoc, deleteDoc, doc, query, where } from "firebase/firestore";
+import { getFirestore, collection, getDocs, onSnapshot, addDoc, deleteDoc, doc, query, where, orderBy, serverTimestamp } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCTcpL6ee0PYNvdmoUJe4LEMgAUHTvVSvM",
@@ -13,7 +13,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore();
 const colRef = collection(db, "movies");
-const qRef = query(colRef, where("category", "==", "drama"));
+const qRef = query(colRef, where("category", "==", "drama"), orderBy("createdAt"));
 
 getDocs(qRef)
   .then(data => {
@@ -40,8 +40,9 @@ addForm.addEventListener("submit", event => {
   event.preventDefault();
   addDoc(colRef, {
     name: addForm.name.value,
-    description: addForm.description.value,
-    category: addForm.category.value
+    category: addForm.category.value,
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
   })
     .then(() => {
       addForm.reset();
